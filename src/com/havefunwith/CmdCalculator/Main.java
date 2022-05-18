@@ -13,7 +13,6 @@ public class Main {
         char opCode = 'd';
 
         switch(opCode) {
-
             case 'a':
                 result = value1 + value2;
                 break;
