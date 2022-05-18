@@ -22,24 +22,28 @@ public class Main {
         * Allows to increment index and access each individual
         * elements across each of the arrays.
          */
-
         for (int i = 0; i < opCodes.length; i++) {
-            switch (opCodes[i]) {
+            execute(opCodes[i], leftVals[i], rightVals[i]); // Pass the appropriate members of each of the arrays as arguments
+        }
+
+        static double execute(char opCode, double leftVal, double rightVal) {
+            double result;
+            switch (opCode) {
                 case 'a':
-                    results[i] = leftVals[i] + rightVals[i];
+                    result = leftVal + rightVal;
                     break;
                 case 's':
-                    results[i] = leftVals[i] - rightVals[i];
+                    result = leftVal - rightVal;
                     break;
                 case 'm':
-                    results[i] = leftVals[i] * rightVals[i];
+                    result = leftVal * rightVal;
                     break;
                 case 'd':
-                    results[i] = rightVals[i] != 0 ? leftVals[i] / rightVals[i] : 0.0;
+                    result = rightVal != 0 ? leftVal / rightVal : 0.0;
                     break;
                 default:
-                    System.out.println("Invalid opCode: " + opCodes[i]);
-                    results[i] = 0.0;
+                    System.out.println("Invalid opCode: " + opCode);
+                    result = 0.0;
                     break;
             }
         }
