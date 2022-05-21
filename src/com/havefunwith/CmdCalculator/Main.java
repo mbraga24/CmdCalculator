@@ -1,5 +1,11 @@
 package com.havefunwith.CmdCalculator;
 
+import java.util.Scanner;
+
+
+/*
+    CONTINUE FROM WORKING WITH STRING 
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -54,6 +60,37 @@ public class Main {
         }
     }
 
+    /*
+        This method will handle input from the user.
+     */
+    static void executeInteractively() {
+        System.out.println("Enter an operation and two numbers");
+        /*
+            When instantiating Scanner, System.in is passed into Scanner
+            constructor. This instance of Scanner will take care of the
+            input given by the user.
+         */
+        Scanner scanner = new Scanner(System.in);
+        /*
+            .nextLine() retrieves that input stored from the user as a String.
+         */
+        String userInput = scanner.nextLine();
+        /*
+            .split() method accepts an expression to identify what needs to be used
+            to split the string into parts.
+         */
+        String[] parts = userInput.split(" ");
+        performFromOperation(parts);
+    }
+
+    private static void performFromOperation(String[] parts) {
+        char opCode = opCodeFromString(parts[0]);
+        double lefVal = opCodeFromString(parts[1]);
+        double rightVal = opCodeFromString(parts[2]);
+        double result = execute(opCode, lefVal, rightVal);
+
+    }
+
     static double execute(char opCode, double leftVal, double rightVal) {
         System.out.println(" Start of execute method :: ");
         double result;
@@ -106,6 +143,75 @@ public class Main {
         double rightVal = Double.parseDouble(args[2]);
         double result = execute(opCode, leftVal, rightVal);
         System.out.println(" End of handleCommandLine method ::");
-        System.out.println("Result: " + result) ;
+//        System.out.println("Result: " + result) ;
+        displayResult(opCode, leftVal, rightVal, result);
+
+    }
+
+    private static void displayResult(char opCode, double leftVal, double rightVal, double result) {
+        char symbol = symbolFromOpCode(opCode);
+        StringBuilder builder = new StringBuilder(20);
+        builder.append(leftVal);
+        builder.append(" ");
+        builder.append(symbol);
+        builder.append(" ");
+        builder.append(rightVal);
+        builder.append(" = ");
+        builder.append(result);
+        String output = builder.toString();
+        System.out.println(output); // Keep in mind that StringBuilder it's not itself a String. It needs to be assigned to a String variable.
+    }
+
+    /*
+        Translate the opCode into the appropriate
+        mathematical symbol.
+     */
+    private static char symbolFromOpCode(char opCode) {
+        // Parallel arrays
+        char[] opCodes = {'a', 's', 'm', 'd'};
+        char[] symbols = {'+', '-', '*', '/'};
+        char symbol = ' ';
+        for (int index = 0; index < opCodes.length; index++) {
+            if (opCode == opCodes[index]) {
+                symbol = symbols[index];
+                break;
+            }
+        }
+        return symbol;
+    }
+
+    /*
+        User can provide the word for the operation it wants to perform, instead
+        of being limited using the op-code 'm'
+     */
+    static char opCodeFromString(String operationName) {
+        /*
+            Retrieve the character at position 0.
+         */
+        char opCode = operationName.charAt(0);
+        return opCode;
+    }
+
+    /*
+        User can provide numeric words to perform operations.
+     */
+    static double valueFromWord(String word) {
+        String[] numberWords = {
+                "zero", "one", "two", "three", "four", "five",
+                "six", "seven", "eight", "nine"
+        };
+        double value = 0.0;
+        /*
+            When the word is matched on the conditional statement,
+            break exists the loop and then runs the next statement
+            after the loop.
+         */
+        for (int index = 0; index < numberWords.length; index++) {
+            if (word.equals(numberWords[index])) {
+                value = index;
+                break;
+            }
+        }
+        return value;
     }
 }
