@@ -1,5 +1,6 @@
 package com.havefunwith.CmdCalculator;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 
@@ -55,7 +56,7 @@ public class Main {
                 System.out.println(currentResult);
             }
         } else if (args.length == 1 && args[0].toLowerCase().equals("interactive"))
-            executeInteractively();
+            executeInteractively(); // Date support arithmetic
         else if (args.length == 3) {  // If the length is 3, the user passed the correct number of arguments in the command-line
             handleCommandLineArgs(args);
         } else {  // If it's anything else a message will be displayed to the user.
@@ -83,20 +84,40 @@ public class Main {
             to split the string into parts.
          */
         String[] parts = userInput.split(" ");
+        System.out.println("parts: " + parts);
         performFromOperation(parts);
     }
 
     private static void performFromOperation(String[] parts) {
         char opCode = opCodeFromString(parts[0]);
-        double lefVal = opCodeFromString(parts[1]);
-        double rightVal = opCodeFromString(parts[2]);
-        double result = execute(opCode, lefVal, rightVal);
-//      System.out.println(result);
-        displayResult(opCode, lefVal, rightVal, result);
+        if (opCode == 'w') {
+            handleWhen(parts);
+        } else {
+            double lefVal = valueFromWord(parts[1]);
+            double rightVal = valueFromWord(parts[2]);
+            double result = execute(opCode, lefVal, rightVal);
+    //      System.out.println(result); // Previous display result approach.
+            displayResult(opCode, lefVal, rightVal, result);
+        }
+    }
+
+    /*
+        Will provide a date and a number of days, so the application can
+        display the date that results by adding that number of days to the
+        starting date.
+     */
+    private static void handleWhen(String[] parts) {
+        LocalDate startDate = LocalDate.parse(parts[1]);
+        long daysToAdd = (long) valueFromWord(parts[2]);
+        LocalDate newDate = startDate.plusDays(daysToAdd);
+        String output = String.format("%s plus %d days is %s", startDate, daysToAdd, newDate);
+        System.out.println(output);
     }
 
     static double execute(char opCode, double leftVal, double rightVal) {
         System.out.println(" Start of execute method :: ");
+        System.out.println("leftVal: " + leftVal);
+        System.out.println("rightVal: " + rightVal);
         double result;
         switch (opCode) {
             case 'a':
@@ -117,6 +138,7 @@ public class Main {
                 break;
         }
         System.out.println(" End of execute method :: ");
+        System.out.println("result: " + result);
         return result;
     }
 
@@ -147,16 +169,17 @@ public class Main {
         double rightVal = Double.parseDouble(args[2]);
         double result = execute(opCode, leftVal, rightVal);
         System.out.println(" End of handleCommandLine method ::");
-//        System.out.println("Result: " + result) ;
+//      System.out.println("Result: " + result) ;
         displayResult(opCode, leftVal, rightVal, result);
 
     }
 
     /*
-        Displaying more informative output to user using StringBuilder.
+        Displaying more informative output to user using StringBuilder & String.format().
      */
     private static void displayResult(char opCode, double leftVal, double rightVal, double result) {
         char symbol = symbolFromOpCode(opCode);
+        /*
         StringBuilder builder = new StringBuilder(20);
         builder.append(leftVal);
         builder.append(" ");
@@ -166,6 +189,9 @@ public class Main {
         builder.append(" = ");
         builder.append(result);
         String output = builder.toString();
+        **/
+
+        String output = String.format("%.3f %c %.3f = %.3f", leftVal, symbol, rightVal, result);
         System.out.println(output); // Keep in mind that StringBuilder it's not itself a String. It needs to be assigned to a String variable.
     }
 
@@ -196,6 +222,7 @@ public class Main {
             Retrieve the character at position 0.
          */
         char opCode = operationName.charAt(0);
+        System.out.println("opCode: " + opCode);
         return opCode;
     }
 
@@ -207,7 +234,7 @@ public class Main {
                 "zero", "one", "two", "three", "four", "five",
                 "six", "seven", "eight", "nine"
         };
-        double value = 0.0;
+        double value = 0;
         /*
             When the word is matched on the conditional statement,
             break exists the loop and then runs the next statement
