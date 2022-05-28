@@ -15,7 +15,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-       /*
+
+        /*
            When a user passes command-line arguments they come as parameter to
            the Main method, they come in as args parameter.
 
@@ -25,53 +26,88 @@ public class Main {
                 - opCode - leftVal - rightVal
                The application will do a calculation using the command-line arguments.
          */
+
+        boolean userFirstTime = true;
+        int userChoice;
+        do {
+            userChoice = initialUserChoice(); // long bug: need to initialize useChoice variable.
+
+            if (userChoice == 1) {
+                performCalculations();
+            } else if (userChoice == 2) {
+                performDateOperation();
+            }
+
+        } while (userChoice != 0);
+    }
+
+    private static void performDateOperation() {
+        displayDateOpertionInstructions();
+        String[] inputParts = executeInteractively();
+        performFromOperation(inputParts);
+    }
+
+    private static void displayDateOpertionInstructions() {
+        System.out.println("Great! Let's do it. \n" +
+                "This option will allow you to add a number of days to a given start date");
+        System.out.println("Follow the structure below to perform the operation of your choice: \n" +
+                "Ex1) when 12/25/2022 seven -- Note: (Only accepts numeric words from 0 - 9)\n" +
+                "Ex2) when 12/25/2022 37\n");
+    }
+
+    private static void thankYou() {
+        System.out.print("Thank you for using the calculator! \n\n" +
+                "See you next time.");
+    }
+
+    private static void notAnOption() {
+        System.out.print("Sorry. This is not a valid option.\n" +
+                "Please, pay attention to the following instructions.");
+    }
+
+    private static int initialUserChoice() {
+        greetingInstructions();
+        String[] inputParts = executeInteractively();
+//        System.out.println("inputParts => " + inputParts[0].getClass().getName());
+        return Integer.parseInt(inputParts[0]);
+    }
+
+    private static void greetingInstructions() {
         System.out.println("\n===================================================");
-        System.out.println("It's the command line calculator project.");
+        System.out.println("              Command Line Calculator");
         System.out.println("===================================================\n");
-        /*
-         * Parallel arrays -
-         * Elements in each array are meant to be used with the corresponding element in each of
-         * the other arrays.
-         */
-        double[] leftValues = {100.0, 25.0, 225.0, 11.0};
-        double[] rightValues = {50.0, 92.0, 17.0, 3.0};
-        char[] opCodes = {'d', 'a', 's', 'm'};
-        double[] results = new double[opCodes.length];
+        System.out.print("Choose between one of the two options below (Choose 1 or 2 from your keyboard). \n\n" +
+                "You can execute the following tasks: \n" +
+                "1) Perform simple calculations. \n" +
+                "2) Perform date addition. Will display a final date that results from\n" +
+                "adding a number of days to a starting date.\n\n" +
+                "*Note: Each task comes with instructions on how to properly execute it. Please pay close attention.* \n" +
+                "Choose: ");
+    }
 
-        // if the length is 0, there is no command-line arguments.
-        if (args.length == 0) {
-            /*
-             * Traditional For loop -
-             * Allows incrementing index and access each individual elements across each of the arrays.
-             */
-            for (int i = 0; i < opCodes.length; i++) {
-                results[i] = execute(opCodes[i], leftValues[i], rightValues[i]); // Pass the appropriate members of each of the arrays as arguments
-            }
+    private static void performCalculations() {
+        displayCalculationInstructions();
+        String[] inputParts = executeInteractively();
+        performFromOperation(inputParts);
+    }
 
-            /*
-             * For each loop -
-             * The results are all in one array, thus For each loop can be used to loop over each array element.
-             *
-             * For each loop will still need to have the variable initialized with the proper type to return each
-             * array element.
-             */
-            for (double currentResult : results) {
-                System.out.println(currentResult);
-            }
-        } else if (args.length == 1 && args[0].toLowerCase().equals("interactive"))
-            executeInteractively(); // Date support arithmetic
-        else if (args.length == 3) {  // If the length is 3, the user passed the correct number of arguments in the command-line
-            handleCommandLineArgs(args);
-        } else {  // If it's anything else a message will be displayed to the user.
-            System.out.println("Please provide an operation code and 2 numeric values");
-        }
+    private static void displayCalculationInstructions() {
+        System.out.println("Great! Let's do it... \n" +
+                "This option will allow you to perform the following operations: \n" +
+                "m) Multiplication: \n" +
+                "a) Addition: \n" +
+                "s) Subtraction: \n" +
+                "d) Division: \n");
+        System.out.println("Follow the structure below to perform the operation of your choice: \n" +
+                "Ex1) multiply 5 3 \n" +
+                "Ex2) multiply 5 three -- Note: (Only accepts numeric words from 0 - 9)\n" +
+                "Ex3) m 5 3\n");
     }
 
     /*
         This method will handle input from the user.
      */
-    static void executeInteractively() {
-        System.out.println("Enter an operation and two numbers");
+    static String[] executeInteractively() {
         /*
             When instantiating Scanner, System.in is passed into Scanner constructor.
             This instance of Scanner will take care of the input given by the user.
@@ -86,7 +122,8 @@ public class Main {
             the string into parts.
          */
         String[] parts = userInput.split(" ");
-        performFromOperation(parts);
+
+        return parts;
     }
 
     private static void performFromOperation(String[] parts) {
@@ -97,7 +134,7 @@ public class Main {
             double lefVal = valueFromWord(parts[1]);
             double rightVal = valueFromWord(parts[2]);
             double result = execute(opCode, lefVal, rightVal);
-    //      System.out.println(result); // Previous display result approach.
+            //      System.out.println(result); // Previous display result approach.
             displayResult(opCode, lefVal, rightVal, result);
         }
     }
