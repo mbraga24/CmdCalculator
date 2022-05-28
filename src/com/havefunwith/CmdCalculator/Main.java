@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 
 /*
-    CONTINUE FROM WORKING WITH STRING 
+    CONTINUE FROM WORKING WITH STRING
  */
 public class Main {
 
@@ -32,7 +32,8 @@ public class Main {
         char[] opCodes = {'d', 'a', 's', 'm'};
         double[] results = new double[opCodes.length];
 
-        if (args.length == 0) { // if the length is 0, there is no command-line arguments.
+        // if the length is 0, there is no command-line arguments.
+        if (args.length == 0) {
             /*
              * Traditional For loop -
              * Allows incrementing index and access each individual
@@ -53,7 +54,9 @@ public class Main {
             for (double currentResult : results) {
                 System.out.println(currentResult);
             }
-        } else if (args.length == 3) {  // If the length is 3, the user passed the correct number of arguments in the command-line
+        } else if (args.length == 1 && args[0].toLowerCase().equals("interactive"))
+            executeInteractively();
+        else if (args.length == 3) {  // If the length is 3, the user passed the correct number of arguments in the command-line
             handleCommandLineArgs(args);
         } else {  // If it's anything else a message will be displayed to the user.
             System.out.println("Please provide an operation code and 2 numeric values");
@@ -88,7 +91,8 @@ public class Main {
         double lefVal = opCodeFromString(parts[1]);
         double rightVal = opCodeFromString(parts[2]);
         double result = execute(opCode, lefVal, rightVal);
-
+//      System.out.println(result);
+        displayResult(opCode, lefVal, rightVal, result);
     }
 
     static double execute(char opCode, double leftVal, double rightVal) {
@@ -148,6 +152,9 @@ public class Main {
 
     }
 
+    /*
+        Displaying more informative output to user using StringBuilder.
+     */
     private static void displayResult(char opCode, double leftVal, double rightVal, double result) {
         char symbol = symbolFromOpCode(opCode);
         StringBuilder builder = new StringBuilder(20);
@@ -182,7 +189,7 @@ public class Main {
 
     /*
         User can provide the word for the operation it wants to perform, instead
-        of being limited using the op-code 'm'
+        of being limited using the op-codes 'a', 's', 'm' and 'd'.
      */
     static char opCodeFromString(String operationName) {
         /*
