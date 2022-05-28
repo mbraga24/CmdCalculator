@@ -1,11 +1,16 @@
 package com.havefunwith.CmdCalculator;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
 /*
-    CONTINUE FROM WORKING WITH STRING
+    Application Description:
+    -> Can perform basic math operations.
+    -> Can perform date arithmetic.
+    -> Can perform all operations with numeric values, both as words (from 0-9), as well as numbers.
+    -> Can accept input from users as both command line arguments, as well as interactively.
  */
 public class Main {
 
@@ -25,8 +30,8 @@ public class Main {
         System.out.println("===================================================\n");
         /*
          * Parallel arrays -
-         * Elements in each array are meant to be used with the corresponding element
-         * in each of the other arrays.
+         * Elements in each array are meant to be used with the corresponding element in each of
+         * the other arrays.
          */
         double[] leftValues = {100.0, 25.0, 225.0, 11.0};
         double[] rightValues = {50.0, 92.0, 17.0, 3.0};
@@ -37,8 +42,7 @@ public class Main {
         if (args.length == 0) {
             /*
              * Traditional For loop -
-             * Allows incrementing index and access each individual
-             * elements across each of the arrays.
+             * Allows incrementing index and access each individual elements across each of the arrays.
              */
             for (int i = 0; i < opCodes.length; i++) {
                 results[i] = execute(opCodes[i], leftValues[i], rightValues[i]); // Pass the appropriate members of each of the arrays as arguments
@@ -46,11 +50,10 @@ public class Main {
 
             /*
              * For each loop -
-             * The results are all in one array, thus For each loop can be used
-             * to loop over each array element.
+             * The results are all in one array, thus For each loop can be used to loop over each array element.
              *
-             * For each loop will still need to have the variable initialized with
-             * the proper type to return each array element.
+             * For each loop will still need to have the variable initialized with the proper type to return each
+             * array element.
              */
             for (double currentResult : results) {
                 System.out.println(currentResult);
@@ -70,9 +73,8 @@ public class Main {
     static void executeInteractively() {
         System.out.println("Enter an operation and two numbers");
         /*
-            When instantiating Scanner, System.in is passed into Scanner
-            constructor. This instance of Scanner will take care of the
-            input given by the user.
+            When instantiating Scanner, System.in is passed into Scanner constructor.
+            This instance of Scanner will take care of the input given by the user.
          */
         Scanner scanner = new Scanner(System.in);
         /*
@@ -80,11 +82,10 @@ public class Main {
          */
         String userInput = scanner.nextLine();
         /*
-            .split() method accepts an expression to identify what needs to be used
-            to split the string into parts.
+            .split() method accepts an expression to identify what needs to be used to split
+            the string into parts.
          */
         String[] parts = userInput.split(" ");
-        System.out.println("parts: " + parts);
         performFromOperation(parts);
     }
 
@@ -102,22 +103,19 @@ public class Main {
     }
 
     /*
-        Will provide a date and a number of days, so the application can
-        display the date that results by adding that number of days to the
-        starting date.
+        Will provide a date and a number of days, so the application can display the date that
+        results by adding that number of days to the starting date.
      */
     private static void handleWhen(String[] parts) {
-        LocalDate startDate = LocalDate.parse(parts[1]);
+        DateTimeFormatter usDateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate startDate = LocalDate.parse(parts[1], usDateFormat);
         long daysToAdd = (long) valueFromWord(parts[2]);
         LocalDate newDate = startDate.plusDays(daysToAdd);
-        String output = String.format("%s plus %d days is %s", startDate, daysToAdd, newDate);
+        String output = String.format("%s plus %d days is %s", startDate.format(usDateFormat), daysToAdd, newDate.format(usDateFormat));
         System.out.println(output);
     }
 
     static double execute(char opCode, double leftVal, double rightVal) {
-        System.out.println(" Start of execute method :: ");
-        System.out.println("leftVal: " + leftVal);
-        System.out.println("rightVal: " + rightVal);
         double result;
         switch (opCode) {
             case 'a':
@@ -137,15 +135,13 @@ public class Main {
                 result = 0.0;
                 break;
         }
-        System.out.println(" End of execute method :: ");
-        System.out.println("result: " + result);
         return result;
     }
 
     private static void handleCommandLineArgs(String[] args) {
-        System.out.println(" Start of execute method :: ");
             /*
                 Getting the data from the command-line will require a few steps.
+
                 Remember: Java is a strongly typed language. The arguments are coming
                 in as Strings. Each individual String is considered a sequence of characters.
              */
@@ -156,8 +152,7 @@ public class Main {
                     - Because a String is considered a sequence of characters, extract the
                         first character from it.
 
-                This line is converting a String representation of a character, into a char
-                representation of a character.
+                This line is converting a String representation of a character, into a char representation of a character.
              */
         char opCode = args[0].charAt(0);
             /*
@@ -168,7 +163,6 @@ public class Main {
         double leftVal = Double.parseDouble(args[1]);
         double rightVal = Double.parseDouble(args[2]);
         double result = execute(opCode, leftVal, rightVal);
-        System.out.println(" End of handleCommandLine method ::");
 //      System.out.println("Result: " + result) ;
         displayResult(opCode, leftVal, rightVal, result);
 
@@ -196,8 +190,7 @@ public class Main {
     }
 
     /*
-        Translate the opCode into the appropriate
-        mathematical symbol.
+        Translate the opCode into the appropriate mathematical symbol.
      */
     private static char symbolFromOpCode(char opCode) {
         // Parallel arrays
@@ -214,15 +207,14 @@ public class Main {
     }
 
     /*
-        User can provide the word for the operation it wants to perform, instead
-        of being limited using the op-codes 'a', 's', 'm' and 'd'.
+        User can provide the word for the operation it wants to perform, instead of being limited
+        using the op-codes 'a', 's', 'm' and 'd'.
      */
     static char opCodeFromString(String operationName) {
         /*
             Retrieve the character at position 0.
          */
         char opCode = operationName.charAt(0);
-        System.out.println("opCode: " + opCode);
         return opCode;
     }
 
@@ -234,17 +226,30 @@ public class Main {
                 "zero", "one", "two", "three", "four", "five",
                 "six", "seven", "eight", "nine"
         };
-        double value = 0;
         /*
-            When the word is matched on the conditional statement,
-            break exists the loop and then runs the next statement
-            after the loop.
+            Local variable will be initially set to -1 instead of 0.
+            This starts the local variable with a value that isn't valid. At the end of the for-loop, if
+            the value still set to -1, that means that the application never matched any of the words the
+            application understands.
+         */
+//        double value = 0;
+        double value = -1;
+        /*
+            When the word is matched on the conditional statement, break exists the loop and then runs the
+            next statement after the loop.
          */
         for (int index = 0; index < numberWords.length; index++) {
             if (word.equals(numberWords[index])) {
                 value = index;
                 break;
             }
+        }
+        /*
+            Parse number out of the String.
+            The primitive wrapper class Double will assist on this task.
+         */
+        if (value == -1) {
+            value = Double.parseDouble(word);
         }
         return value;
     }
