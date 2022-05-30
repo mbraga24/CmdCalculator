@@ -1,11 +1,14 @@
 package com.havefunwith.CmdCalculator;
 
 public class MathEquation {
+
+    // Field Initializers
     double leftVal;
     double rightVal;
     char opCode;
     double result;
 
+    // Default Constructor
     public MathEquation() {}
 
     public MathEquation(char opCode) {
@@ -13,11 +16,13 @@ public class MathEquation {
     }
 
     public MathEquation(double leftVal, double rightVal, char opCode) {
+        // Chained Constructor
         this(opCode);
         this.leftVal = leftVal;
         this.rightVal = rightVal;
     }
 
+    // Class Method
     void execute() {
         switch (opCode) {
             case 'a':
