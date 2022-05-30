@@ -15,6 +15,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+
+        performCalculations();
+
        /*
            When a user passes command-line arguments they come as parameter to
            the Main method, they come in as args parameter.
@@ -28,6 +31,9 @@ public class Main {
         System.out.println("\n===================================================");
         System.out.println("It's the command line calculator project.");
         System.out.println("===================================================\n");
+    }
+
+    private static void performCalculations() {
         /*
          * Parallel arrays -
          * Elements in each array are meant to be used with the corresponding element in each of
@@ -37,6 +43,8 @@ public class Main {
         double[] rightValues = {50.0, 92.0, 17.0, 3.0};
         char[] opCodes = {'d', 'a', 's', 'm'};
         double[] results = new double[opCodes.length];
+
+        
 
         // if the length is 0, there is no command-line arguments.
         if (args.length == 0) {
