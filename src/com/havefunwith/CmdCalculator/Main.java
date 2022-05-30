@@ -44,7 +44,22 @@ public class Main {
         char[] opCodes = {'d', 'a', 's', 'm'};
         double[] results = new double[opCodes.length];
 
-        
+        /*
+            Declare an array of MathEquations.
+            This array is an array of MathEquation references, we're not creating 4 instances of the
+            MathEquation class, instead 4 references of type MathEquation are being created. Each element
+            within this array needs to be explicitly create an instance of the MathEquation class.
+         */
+        MathEquation[] equations = MathEquation[4];
+        equations[0] = create(100.0, 50.0, 'd');
+
+        // Each of the fields within MathEquation have their appropriate values.
+        // equations[0] = new MathEquation();
+        // equations[0].leftValues = 100.0;
+        // equations[0].rightValues = 50.0;
+        // equations[0].opCodes = 'd';
+
+        equations[0] = create(100.0, 50.0, 'd');
 
         // if the length is 0, there is no command-line arguments.
         if (args.length == 0) {
@@ -73,6 +88,20 @@ public class Main {
         } else {  // If it's anything else a message will be displayed to the user.
             System.out.println("Please provide an operation code and 2 numeric values");
         }
+    }
+
+    /*
+        The create method will initialize each of the elements in the equations array, creating a
+        new instance of the MathEquations class and then returning back a reference to that newly
+        created MathEquation.
+     */
+    private static MathEquation create(double leftVal, double rightVal, char opCode) {
+        MathEquation equation = new MathEquation();
+        equation.leftVal = leftVal;
+        equation.rightVal = rightVal;
+        equation.opCodes = opCode;
+
+        return equation;
     }
 
     /*
