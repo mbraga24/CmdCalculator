@@ -1,9 +1,9 @@
 package com.havefunwith.CmdCalculator;
 
 public class MathEquation {
-    double leftValues;
-    double rightValues;
-    char opCodes;
+    double leftVal;
+    double rightVal;
+    char opCode;
     double result;
 
     void execute() {
