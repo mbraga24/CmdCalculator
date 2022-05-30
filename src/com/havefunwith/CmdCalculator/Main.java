@@ -13,7 +13,6 @@ import java.util.Scanner;
     -> Can accept input from users as both command line arguments, as well as interactively.
  */
 public class Main {
-
     public static void main(String[] args) {
         System.out.println("\n===================================================");
         System.out.println("It's the command line calculator project.");
@@ -31,32 +30,21 @@ public class Main {
         MathEquation[] equations = new MathEquation[4];
 
         // Each of the elements in the array are referencing new instance of the MathEquations class.
-        equations[0] = create(100.0, 50.0, 'd');
-        equations[1] = create(25.0, 92.0, 'a');
-        equations[2] = create(225.0, 17.0, 's');
-        equations[3] = create(11.0, 3.0, 'm');
+        equations[0]  = new MathEquation(100.0, 50.0, 'd');
+        equations[1] = new MathEquation(25.0, 92.0, 'a');
+        equations[2] = new MathEquation(225.0, 17.0, 's');
+        equations[3] = new MathEquation(11.0, 3.0, 'm');
 
         for (MathEquation equation : equations) {
             equation.execute();
             System.out.println("Result = " + equation.result);
         }
-
-        equations[0] = create(100.0, 50.0, 'd');
     }
-
     /*
         The create method will initialize each of the elements in the equations array, creating a
         new instance of the MathEquations class and then returning back a reference to that newly
         created MathEquation.
      */
-    private static MathEquation create(double leftVal, double rightVal, char opCode) {
-        MathEquation equation = new MathEquation();
-        equation.leftVal = leftVal;
-        equation.rightVal = rightVal;
-        equation.opCode = opCode;
-
-        return equation;
-    }
 
     /*
         Will provide a date and a number of days, so the application can display the date that

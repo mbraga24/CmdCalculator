@@ -6,6 +6,18 @@ public class MathEquation {
     char opCode;
     double result;
 
+    public MathEquation() {}
+
+    public MathEquation(char opCode) {
+        this.opCode = opCode;
+    }
+
+    public MathEquation(double leftVal, double rightVal, char opCode) {
+        this(opCode);
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+    }
+
     void execute() {
         switch (opCode) {
             case 'a':
@@ -25,6 +37,28 @@ public class MathEquation {
                 result = 0.0;
                 break;
         }
+    }
+
+    // Accessors & Modifiers
+
+    // Accessor
+    public double getLeftVal() {
+        return this.leftVal;
+    }
+
+    // Modifier
+    public void setLeftVal(double leftVal) {
+        this.leftVal = leftVal;
+    }
+
+    // Accessor
+    public double getRightVal() {
+        return this.rightVal;
+    }
+
+    // Modifier
+    public void setRightVal(double rightVal) {
+        this.rightVal = rightVal;
     }
 
 }
